@@ -8,6 +8,7 @@ function Header(){
             <nav>
                 <ul className="flex justify-around">
                     <li><Link to="/" classsName="hover:text-yellow-500">Events</Link></li>
+                    <li><Link to="/signin" className="hover:text-yellow-500">Sign in</Link></li>
                 </ul>
             </nav>
 

@@ -2,7 +2,9 @@ import "./App.css";
 import {Routes, Route} from "react-router-dom";
 import "./index.css";
 import Events from "./components/Events";
-import Header from "./components/Header"
+import Header from "./components/Header";
+import SignIn from "./components/SignIn";
+import Dashboard from "./components/Dashboard";
 
 function App(){
   return(
@@ -10,6 +12,8 @@ function App(){
       <Header/>
       <Routes>
         <Route path="/" element={<Events/>}/>
+        <Route path="/signin" element={<SignIn/>}/>
+        <Route path="/dashboard" element={<Dashboard/>}/>
       </Routes>
     </div>
 
