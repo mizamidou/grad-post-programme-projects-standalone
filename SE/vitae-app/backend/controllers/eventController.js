@@ -43,7 +43,7 @@ exports.getExternalEvents = async (req,res) =>{
     try{
         const response= await axios.get("https://api.datathistle.com/v1/events",{
             headers:{
-                "X-API-Key":process.env.DATA_THISTLE_API_KEY,
+                Authorization: `Bearer ${process.env.DATA_THISTLE_API_KEY}`,
             },
             params:{
                 limit:10,
@@ -51,9 +51,11 @@ exports.getExternalEvents = async (req,res) =>{
         })
         res.json(response.data)
     }
-    catch(err){
-        res.status(500).json({message:"Error fetching external events", error:err.message})
-    }
-}
-
-
+    catch (err) {
+        console.error("Data Thistle API Error:", err.response?.data || err.message);
+        res.status(500).json({
+          message: "Error fetching external events",
+          error: err.response?.data || err.message,
+        });
+      }
+    };
