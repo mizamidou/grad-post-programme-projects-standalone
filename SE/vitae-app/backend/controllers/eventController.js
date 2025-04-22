@@ -40,15 +40,20 @@ exports.deleteManualEvent = async (req,res) =>{
 
 
 exports.getExternalEvents = async (req,res) =>{
+    const searchTerm=req.query.search || "";
     try{
-        const response= await axios.get("https://api.datathistle.com/v1/events",{
+        console.log("Backend searching for:", searchTerm)
+        const response= await axios.get("https://api.datathistle.com/v1/search",{
             headers:{
                 Authorization: `Bearer ${process.env.DATA_THISTLE_API_KEY}`,
             },
             params:{
+                query:searchTerm,
                 limit:10,
             },
         })
+        console.log("Type of response.data.data:", typeof response.data.data)
+        console.log("Data Thistle API Response:", response.data)
         res.json(response.data)
     }
     catch (err) {
