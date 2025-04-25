@@ -11,6 +11,7 @@ function App(){
   return(
     <div className="app">
       <Header/>
+      <main className="pt-20 px-4">
       <Routes>
         <Route path="/events/:id" element={<EventDetails/>} />
         <Route path="/" element={<Events/>}/>
@@ -18,6 +19,7 @@ function App(){
         <Route path="/signin" element={<SignIn/>}/>
         <Route path="/dashboard" element={<Dashboard/>}/>
       </Routes>
+      </main>
     </div>
 
   )
