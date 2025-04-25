@@ -64,3 +64,35 @@ exports.getExternalEvents = async (req,res) =>{
         });
       }
     };
+
+    exports.getSingleExternalEvent= async (req,res) =>{
+        const eventId= req.params.id;
+
+        try{
+            const response= await axios.get(`https://api.datathistle.com/v1/events/${eventId}`, {
+                headers:{
+                    Authorization:`Bearer ${process.env.DATA_THISTLE_API_KEY}`,
+            
+                },
+                params:{
+                    limit:100,
+                }
+            });
+
+        console.log("DATA_THISTLE_API_KEY:", process.env.DATA_THISTLE_API_KEY);
+        const event= response.data;
+        
+
+        if(!event || !event.event_id){
+            return res.status(400).json({message:"Event not found"})
+        }
+        
+        res.json(event)
+
+
+        } catch(err){
+            console.error("Error fetching single external event:", err.message)
+            res.status(500).json({message:"Error retrieving external event", error:err.message})
+
+        }
+    }

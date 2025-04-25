@@ -7,5 +7,6 @@ router.post("/manual", eventController.createManualEvent)
 router.delete("/manual", eventController.deleteManualEvent)
 
 router.get("/external", eventController.getExternalEvents)
+router.get("/:id", eventController.getSingleExternalEvent)
 
 module.exports= router;
