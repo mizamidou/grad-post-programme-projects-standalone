@@ -2,7 +2,8 @@
 // Each function is connected to routes/events and it tells the server what to do when a request is received
 
 const Event= require("../models/Event");
-const axios= require("axios");// libraby for http requests
+const axios= require("axios");
+const Signup= require("../models/Signup")
 
 // Creation of internal events GET, POST, DELETE
 
@@ -95,4 +96,18 @@ exports.getExternalEvents = async (req,res) =>{
             res.status(500).json({message:"Error retrieving external event", error:err.message})
 
         }
+    }
+
+    exports.signupForEvent= async (req,res) =>{
+        const {userId, eventId}= req.body;
+
+        try{
+            const newSignup= new Signup({userId, eventId})
+            await newSignup.save()
+            res.status(201).json({message:"Signed up for event!"})
+        } catch(err){
+            console.error("Signup failed", err.message)
+            res.status(500).json({message:"Couldnt sign up ", error:err.message})
+        }
+
     }

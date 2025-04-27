@@ -18,7 +18,7 @@ function SignIn(){
     }
 
     try{
-        const res= await axios.post("http://localhost:5000/api/auth/login", {
+        const res= await axios.post("http://localhost:5000/api/auth/signin", {
             email,
             password,
         })
@@ -28,7 +28,7 @@ function SignIn(){
 
         navigate("/events")
     }catch (err){
-        const msg= err.response?.data?.message || "Login failed"
+        const msg= err.response?.data?.message || "Sign in failed"
         setError(msg)
     }
     }
@@ -69,6 +69,14 @@ function SignIn(){
             Sign In
           </button>
         </form>
+        <p className= "text-sm mt-4 text center">
+            Create an account {""}
+            <button
+                className="text-blue-600 underline"
+                onClick={()=> navigate("/signup")}>
+                Sign up here
+            </button>
+        </p>
       </div>
 
     )
