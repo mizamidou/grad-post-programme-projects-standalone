@@ -25,6 +25,7 @@ function Events(){
             console.log("API response:",res.data)
             console.log("Number of events:", res.data.length)
             setEvents(res.data)
+            console.log("Sample event:", res.data[0])
         }
         catch(err){
             console.log("Failed to fetch events", err)
@@ -60,31 +61,41 @@ function Events(){
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
-                {Array.isArray(events) && events.map((event)=>(
+                {Array.isArray(events) && events.map((event, index)=>(
                     <Link
                         to={`/events/${event.event_id}`}
-                        key={`${event.event_id}_${event.start_ts}`}
+                        key={`${event.event_id}_${event.start_ts}_${index}`}
                         className="block"
                     >
                 <div className="border rounded-2xl shadow-md p-4 bg-white hover:shadow-lg transition cursor-pointer">
-                <h2 className="text-xl font-semibold mb-1">{event.name}</h2>
+                    {event.imageUrl && (
+                        <img
+                            src={`http://localhost:5000/${event.imageUrl}`}
+                            alt={event.name}
+                            className="w-full h-40 object-cover rounded mb-2"
+                        />
+                    )}
 
-                <p className="text-sm text-gray-500 mb-2">
-                    {event.place_name || "Unknown location"}
-                </p>
-
-                {event.start_ts && (
-                <p className="text-sm text-gray-600 mb-2">
-                    {format(new Date(event.start_ts), "PPPp")}
-                </p>
-                )}
+  
+                    <h2 className="text-xl font-semibold mb-1">{event.name}</h2>
+                    <p className="text-sm text-gray-500 mb-2">
+                        {event.place_name || "Unknown location"}
+                    </p>
 
 
-                <p className="text-sm text-gray-700">
-                    {event.tags?.slice(0,3).join(", ")}...
-                </p>
-               
-            </div>
+                    {event.start_ts && (
+                        <p className="text-sm text-gray-600 mb-2">
+                            {format(new Date(event.start_ts), "PPPp")}
+                        </p>
+                    )}
+
+  
+                    {event.tags?.length > 0 && (
+                        <p className="text-sm text-gray-700">
+                            {event.tags.slice(0, 3).join(", ")}
+                        </p>
+                    )}
+                </div>
             </Link>
             ))}
 

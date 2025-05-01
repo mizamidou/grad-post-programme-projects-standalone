@@ -5,7 +5,7 @@ const {signupForEvent}= require("../controllers/eventController")
 
 router.get("/manual", eventController.getManualEvents)
 router.post("/manual", eventController.createManualEvent)
-router.delete("/manual", eventController.deleteManualEvent)
+router.delete("/manual/:id", eventController.deleteManualEvent)
 
 router.get("/external", eventController.getExternalEvents)
 router.get("/:id", eventController.getSingleExternalEvent)

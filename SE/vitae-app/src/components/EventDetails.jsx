@@ -110,6 +110,13 @@ function EventDetails(){
 
     return(
         <div className="p-6 max-w-2xl mx-auto">
+            {event.imageUrl && (
+            <img
+            src={`http://localhost:5000/${event.imageUrl}`}
+            alt={event.name}
+            className="w-full h-64 object-cover rounded mb-4"
+            />
+            )}
             <h1 className= "text-3xl font-bold mb-2">{event.name}</h1>
             <p className="text-gray-600 mb-1">{placeName}</p>
             {startDate &&(
@@ -118,7 +125,18 @@ function EventDetails(){
                 </p>
             )}
             <p className="mb-4">{description}</p>
-
+            {event.tags && event.tags.length > 0 && (
+            <div className="mb-4">
+              {event.tags.map((tag, i) => (
+                <span
+                    key={i}
+                    className="inline-block bg-gray-200 text-gray-700 px-2 py-1 rounded-full text-xs mr-2"
+                >
+              #{tag}
+                </span>
+              ))}
+            </div>
+            )}
             <button 
                 onClick={handleSignUp}
                 className="bg-blue-500 text-white px-4 py-2 rounded">Sign up</button>

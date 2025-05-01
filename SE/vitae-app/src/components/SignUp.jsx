@@ -1,14 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import  { useNavigate } from "react-router-dom";
+import { AuthContext } from "./AuthContext";
 
 function SignUp(){
     const[name,setName]=useState("")
     const[surname,setSurname]=useState("")
     const[email,setEmail]= useState("")
     const[password,setPassword]= useState("")
-    const [error,setError]= useState("")
+    const[error,setError]= useState("")
+    const[role,setRole]=useState("user")
     const navigate=useNavigate();
+    const { login } = useContext(AuthContext)
 
     const handleSubmit= async (e) =>{
         e.preventDefault()
@@ -25,11 +28,11 @@ function SignUp(){
             surname,
             email,
             password,
+            role,
         })
         
-        localStorage.setItem("token",res.data.token)
-        localStorage.setItem("user", JSON.stringify(res.data.user))
-
+        
+        login(res.data.user)
         navigate("/events")
     }catch (err){
         const msg= err.response?.data?.message || "Sign up failed"
@@ -88,6 +91,20 @@ function SignUp(){
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-1">Role</label>
+            <select
+              className="w-full border p-2 rounded"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              required
+            >
+              <option value="" disabled>Select a role</option>
+              <option value="user">User</option>
+              <option value="staff">Staff</option>
+            </select>
           </div>
   
           <button

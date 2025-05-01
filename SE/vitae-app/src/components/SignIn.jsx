@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import  { useNavigate } from "react-router-dom";
+import { AuthContext } from "./AuthContext";
 
 function SignIn(){
     const[email,setEmail]= useState("")
     const[password,setPassword]= useState("")
     const [error,setError]= useState("")
     const navigate=useNavigate();
+    const { login } = useContext(AuthContext)
 
     const handleSubmit= async (e) =>{
         e.preventDefault()
@@ -23,10 +25,10 @@ function SignIn(){
             password,
         })
         
-        localStorage.setItem("token",res.data.token)
-        localStorage.setItem("user", JSON.stringify(res.data.user))
-
+        console.log("Login data:", res.data)
+        login(res.data.user)
         navigate("/events")
+        console.log("Login data:", res.data)
     }catch (err){
         const msg= err.response?.data?.message || "Sign in failed"
         setError(msg)

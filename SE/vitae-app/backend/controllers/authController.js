@@ -4,19 +4,23 @@ const bcrypt= require("bcrypt");
 
 
 exports.signup= async (req,res) =>{
- const{name, surname, email, password}= req.body;
+ const{name, surname, email, password, role}= req.body;
 
  try{
     const existingUser= await User.findOne({email})
     if (existingUser){
         return res.status(400).json({message:"User Already Exists"})
     }
+
+    const hashedPassword = await bcrypt.hash(password, 12)
  
     const newUser= new User({
         name,
         surname,
         email, 
-        password})
+        password: hashedPassword,
+        role:role || "user"
+    })
     await newUser.save()
 
     const token= jwt.sign({id:newUser._id}, process.env.JWT_SECRET,{
@@ -72,4 +76,8 @@ exports.signin = async ( req,res) =>{
             console.error("Sign in error:", err.message);
             res.status(500).json({message:"Sign in Failed", error:err.message})
     }
+}
+
+exports.logout= (req,res) =>{
+    res.status(200).json({message:" Logged out successfully"})
 }
