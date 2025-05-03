@@ -29,13 +29,15 @@ function Header() {
             </li>
           )}
 
-          {user && (
+          {user &&(
             <>
+          {user && user.role ==="staff" &&(
               <li>
                 <Link to="/dashboard" className="hover:text-yellow-500">
                   Dashboard
                 </Link>
               </li>
+              )}
               <li>
                 <button
                   onClick={handleLogout}

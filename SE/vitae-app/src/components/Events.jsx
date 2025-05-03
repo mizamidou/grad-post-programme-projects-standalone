@@ -39,7 +39,7 @@ function Events(){
 
 
     return(
-        <div className="pt-20 px-4 relative z-10">
+        <div className="flex flex-col items-center justify-center mt-8 space-y-4">
             <input
                 type="text"
                 placeholder="Search any event"
@@ -48,7 +48,7 @@ function Events(){
                 className="p-2 border rounded mr-2"
             />
             <button 
-                onClick={handleSearch} className= "bg-red-600 text-white text-2xl px-6 py-3 rounded-lg mt-4">
+                onClick={handleSearch} className= "bg-red-600 text-white text-xl px-6 py-3 rounded-lg">
                     SEARCH
             </button>
             
@@ -57,7 +57,7 @@ function Events(){
                 <p className="mt-4 text-blue-500 font-semibold">Loading events...</p>
             )}
             {!loading && events.length===0 &&(
-                <p className="mt-4 text-gray-500">No events found. Try a different search</p>
+                <p className="mt-4 text-gray-500"></p>
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
@@ -72,6 +72,7 @@ function Events(){
                         <img
                             src={`http://localhost:5000/${event.imageUrl}`}
                             alt={event.name}
+                            loading="lazy"
                             className="w-full h-40 object-cover rounded mb-2"
                         />
                     )}

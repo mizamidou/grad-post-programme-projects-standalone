@@ -7,10 +7,12 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const events= require("./routes/events");
 const authRoutes = require("./routes/auth");
+const compression= require("compression")
 
 dotenv.config();
 
 const app= express();
+app.use(compression());
 
 //Middleware
 app.use(cors()); //front end to connect

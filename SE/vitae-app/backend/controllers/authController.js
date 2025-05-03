@@ -12,13 +12,12 @@ exports.signup= async (req,res) =>{
         return res.status(400).json({message:"User Already Exists"})
     }
 
-    const hashedPassword = await bcrypt.hash(password, 12)
  
     const newUser= new User({
         name,
         surname,
         email, 
-        password: hashedPassword,
+        password,
         role:role || "user"
     })
     await newUser.save()
@@ -54,7 +53,7 @@ exports.signin = async ( req,res) =>{
 
         const isMatch= await bcrypt.compare(password, user.password)
         if(!isMatch){
-            res.status(400).json({message:"Invalid credentials"})
+           return res.status(400).json({message:"Invalid credentials"})
         }
 
     
@@ -62,7 +61,7 @@ exports.signin = async ( req,res) =>{
         expiresIn:"1d"
         })
         
-        res.json({
+    return   res.json({
             token,
             user:{
                 id:user._id,

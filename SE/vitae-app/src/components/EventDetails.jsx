@@ -113,6 +113,7 @@ function EventDetails(){
             {event.imageUrl && (
             <img
             src={`http://localhost:5000/${event.imageUrl}`}
+            loading="lazy"
             alt={event.name}
             className="w-full h-64 object-cover rounded mb-4"
             />
