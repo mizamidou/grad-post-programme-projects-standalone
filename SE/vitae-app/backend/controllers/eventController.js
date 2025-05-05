@@ -7,15 +7,19 @@ const Signup= require("../models/Signup")
 
 // Creation of internal events GET, POST, DELETE
 
-exports.getManualEvents= async (req,res) =>{
-    try{
-        const events= await Event.find();
-        res.json(events);
+exports.getManualEvents = async (req, res) => {
+    try {
+      const events = await Event.find();
+      const formatted = events.map(event => ({
+        ...event.toObject(),
+        event_id: event._id.toString(),
+        source: "manual",
+      }));
+      res.json(formatted);
+    } catch (err) {
+      res.status(500).json({ message: "Error fetching manual events", error: err.message });
     }
-    catch (err){
-        res.status(500).json({message:"Error fetching manual events", error:err.message })
-    }
-}
+  };
 
 exports.createManualEvent = async (req,res) =>{
     const {title, description, date, createdBy }= req.body;
@@ -97,11 +101,20 @@ exports.getExternalEvents = async (req,res) =>{
         res.json(event)
 
 
-        } catch(err){
-            console.error("Error fetching single external event:", err.message)
-            res.status(500).json({message:"Error retrieving external event", error:err.message})
-
-        }
+        } catch (err) {
+            console.log("Fetching external event with ID:", req.params.id);
+            console.error("Error fetching single external event:");
+            if (err.response) {
+              console.error("Status:", err.response.status);
+              console.error("Response:", err.response.data);
+            } else {
+              console.error("Error:", err.message);
+            }
+            res.status(500).json({
+              message: "Error retrieving external event",
+              error: err.response?.data || err.message,
+            });
+          }
     }
 
     exports.signupForEvent= async (req,res) =>{
@@ -117,3 +130,55 @@ exports.getExternalEvents = async (req,res) =>{
         }
 
     }
+
+    exports.getCombinedEvents = async (req, res) => {
+        const searchTerm = req.query.search || "";
+      
+        try {
+          const externalRes = await axios.get("https://api.datathistle.com/v1/search", {
+            headers: { Authorization: `Bearer ${process.env.DATA_THISTLE_API_KEY}` },
+            params: { query: searchTerm, limit: 10 },
+          });
+
+          console.log("Data Thistle response:", externalRes.data);
+      
+          const externalData = Array.isArray(externalRes.data) ? externalRes.data : [];
+      
+          const externalEvents = externalData.map(event => ({
+            ...event,
+            source: "external",
+          }));
+      
+         
+          const manualEvents = await Event.find({
+            $or: [
+              { title: { $regex: searchTerm, $options: "i" } },
+              { description: { $regex: searchTerm, $options: "i" } },
+            ],
+          }).lean();
+      
+          const formattedManualEvents = manualEvents.map(event => ({
+            event_id: event._id.toString(),
+            name: event.title,
+            place_name: "Local Community",
+            start_ts: event.date,
+            imageUrl: event.imageUrl || "",
+            tags: event.tags || [],
+            descriptions: [{ description: event.description }],
+            schedules: [{ start_ts: event.date, place: { name: "Local Community" } }],
+            source: "manual",
+          }));
+      
+          const combined = [...externalEvents, ...formattedManualEvents];
+          res.json(combined);
+      
+        } catch (err) {
+          console.error("Error combining events:", err.response?.data || err.message);
+          res.status(500).json({
+            message: "Error combining events",
+            error: err.response?.data || err.message,
+          });
+        }
+      };
+      
+  

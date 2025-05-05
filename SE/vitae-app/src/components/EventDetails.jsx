@@ -7,25 +7,41 @@ import { gapi } from "gapi-script";
 
 
 function EventDetails(){
-    const { id }= useParams();
+    const { id, source }= useParams();
     const [event, setEvent]= useState(null);
     const [loading, setLoading]= useState(true);
     
-
-    useEffect(() =>{
-        const fetchEvent =async ()=>{
-            try{
-                const res= await axios.get(`http://localhost:5000/api/events/${id}`);
-                setEvent(res.data)
-            } catch (err){
-                console.error("Failed to fetch event", err);
-            } finally{
-                setLoading(false)
-            }
-        }
-
-        fetchEvent()
-    }, [id]);
+    useEffect(() => {
+      const fetchEvent = async () => {
+          try {
+              let res;
+              if (source === "manual") {
+                  res = await axios.get(`http://localhost:5000/api/events/manual/${id}`);
+                  // Transform manual event structure to match expected shape
+                  const manualEvent = res.data;
+                  setEvent({
+                      ...manualEvent,
+                      name: manualEvent.title,
+                      descriptions: [{ description: manualEvent.description }],
+                      schedules: [{ start_ts: manualEvent.date, place: { name: "Local Community" } }],
+                      tags: manualEvent.tags || [],
+                      imageUrl: manualEvent.imageUrl || null,
+                      event_id: manualEvent._id,
+                  });
+              } else {
+                  res = await axios.get(`http://localhost:5000/api/events/${id}`);
+                  setEvent(res.data);
+              }
+          } catch (err) {
+              console.error("Failed to fetch event", err);
+          } finally {
+              setLoading(false);
+          }
+      };
+  
+      fetchEvent();
+  }, [id, source]);
+  
     
     if (loading) return <p className="p-4">Loading...</p>
     if (!event) return <p className="p-4">Event not found.</p>

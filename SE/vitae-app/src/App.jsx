@@ -19,7 +19,7 @@ function App(){
       <Header/>
       <main className="pt-20 px-4">
       <Routes>
-        <Route path="/events/:id" element={<EventDetails/>} />
+        <Route path="/events/:source/:id" element={<EventDetails/>} />
         <Route path="/" element={<Events/>}/>
         <Route path="/events" element={<Events/>}/>
         <Route path="/signin" element={<SignIn/>}/>
