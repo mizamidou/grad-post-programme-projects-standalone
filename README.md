@@ -4,7 +4,7 @@ A full-stack web application that allows users to browse events, sign up using t
 
 ##  Video Walkthrough
 
-Please watch the [video demo](#) for a full walkthrough of the platform’s features.
+Please watch the [https://www.loom.com/share/33db7f0d02574151be9d7774a44c9c76?sid=c8de3a6e-e86a-4439-a0d2-eaa94523c984](#) for a full walkthrough of the platform’s features.
 
 ---
 
