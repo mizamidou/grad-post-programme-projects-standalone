@@ -5,6 +5,8 @@ import axios from "axios";
 import { format } from "date-fns";
 import { gapi } from "gapi-script";
 
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 
 function EventDetails(){
     const { id, source }= useParams();
@@ -16,7 +18,7 @@ function EventDetails(){
           try {
               let res;
               if (source === "manual") {
-                  res = await axios.get(`http://localhost:5000/api/events/manual/${id}`);
+                  res = await axios.get(`${BASE_URL}/api/events/manual/${id}`);
                   const manualEvent = res.data;
                   setEvent({
                       ...manualEvent,
@@ -28,7 +30,7 @@ function EventDetails(){
                       event_id: manualEvent._id,
                   });
               } else {
-                  res = await axios.get(`http://localhost:5000/api/events/${id}`);
+                  res = await axios.get(`${BASE_URL}/api/events/${id}`);
                   setEvent(res.data);
               }
           } catch (err) {
@@ -60,7 +62,7 @@ function EventDetails(){
                 return
             }
 
-            await axios.post("http://localhost:5000/api/events/signup",{
+            await axios.post(`${BASE_URL}/api/events/signup`,{
                 userId:user.id,
                 eventId:event.event_id,},
                 {
@@ -127,7 +129,7 @@ function EventDetails(){
         <div className="p-6 max-w-2xl mx-auto">
             {event.imageUrl && (
             <img
-            src={`http://localhost:5000/${event.imageUrl}`}
+            src={`${BASE_URL}/${event.imageUrl}`}
             loading="lazy"
             alt={event.name}
             className="w-full h-64 object-cover rounded mb-4"

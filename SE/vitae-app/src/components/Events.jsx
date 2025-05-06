@@ -3,6 +3,8 @@ import axios from "axios";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
 
+const BASE_URL = import.meta.env.VITE_API_URL;
+
 function Events() {
   const [searchTerm, setSearchTerm] = useState("");
   const [events, setEvents] = useState([]);
@@ -16,7 +18,7 @@ function Events() {
     setLoading(true);
     try {
       console.log("Searching term:", searchTerm);
-      const res = await axios.get(`http://localhost:5000/api/events/combined?search=${searchTerm}`);
+      const res = await axios.get(`${BASE_URL}/api/events/combined?search=${searchTerm}`);
       console.log("Received events:", res.data);
       setEvents(res.data);
     } catch (err) {
@@ -63,7 +65,7 @@ function Events() {
                 <div className="border rounded-2xl shadow-md p-4 bg-white hover:shadow-lg transition cursor-pointer">
                   {event.imageUrl && (
                     <img
-                      src={`http://localhost:5000/${event.imageUrl}`}
+                      src={`${BASE_URL}/${event.imageUrl}`}
                       alt={event.name}
                       loading="lazy"
                       className="w-full h-40 object-cover rounded mb-2"

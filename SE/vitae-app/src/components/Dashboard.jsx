@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+const BASE_URL = import.meta.env.VITE_API_URL;
 
 function Dashboard(){
     const user= JSON.parse(localStorage.getItem("user"))
@@ -21,7 +22,7 @@ function Dashboard(){
 
     const fetchEvents = async () =>{
         try{
-            const res = await axios.get("http://localhost:5000/api/events/manual")
+            const res = await axios.get(`${BASE_URL}/api/events/manual`)
             setEvents(res.data)
         } catch (err){
             console.error("Failed to fetch events", err)
@@ -31,7 +32,7 @@ function Dashboard(){
     const handleCreate = async (e) =>{
         e.preventDefault()
         try{
-            await axios.post(`http://localhost:5000/api/events/manual`,{
+            await axios.post(`${BASE_URL}/api/events/manual`,{
                 title,
                 description,
                 date,
@@ -61,7 +62,7 @@ function Dashboard(){
 
     const handleDelete = async (id) =>{
         try{
-            await axios.delete(`http://localhost:5000/api/events/manual/${id}`, {
+            await axios.delete(`${BASE_URL}/api/events/manual/${id}`, {
                 headers:{ Authorization:`Bearer ${token}`}
             })
             fetchEvents()
