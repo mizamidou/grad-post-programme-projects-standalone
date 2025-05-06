@@ -6,27 +6,30 @@ add,create and delete their own events.
 VIDEO WALKTHROUGH
 Please watch the video Demo 
 
+
 LIVE DEMO
 View the site
+https://frolicking-rabanadas-9ec607.netlify.app/events
+
 
 Tech Information
-Frontend:
-Backend:
-Authentication:
-Events Integration:
-Database:
-Calendar Integration:
-Hosting:
+Frontend:	React + Vite + Tailwind CSS
+Backend:Node.js + Express
+Authentication:JWT-based auth (localStorage)
+Events Integration:Data Thistle API
+Database:	MongoDB Atlas with Mongoose
+Calendar Integration:Google Calendar API
+Hosting:Netlify
 
 
 TEST ACCOUNTS
-User:
-Email:
-Password:
+User
+Email:m.mizamidou@hotmail.com
+Password: Coding2025
 
-Staff:
-Email:
-Password:
+Staff
+Email:m.mizamidou@gmail.com
+Password: Coding2025
 
 LOCAL SET UP:
 Please follow these instructions to run the project locally:
@@ -38,8 +41,24 @@ Tailwind is configured in tailwind.config.js
 
 PostCSS is set up via postcss.config.js
 
+
+
+
 Tailwind is imported in your main CSS (like index.css or App.css)
 
 4.Set up environemntal variables
+
+
+MVP Features Covered
+1.Display list of events
+2.Users can sign up for events
+3.Users can add events to Google Calendar
+4.Staff can log in and create/manage events
+5.Fully responsive and accessible design
+6.Clear UI feedback, error handling, and loading states
+7.Publicly hosted frontend and backend
+
+
+
 
 
