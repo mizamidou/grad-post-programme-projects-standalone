@@ -17,13 +17,12 @@ function EventDetails(){
               let res;
               if (source === "manual") {
                   res = await axios.get(`http://localhost:5000/api/events/manual/${id}`);
-                  // Transform manual event structure to match expected shape
                   const manualEvent = res.data;
                   setEvent({
                       ...manualEvent,
                       name: manualEvent.title,
                       descriptions: [{ description: manualEvent.description }],
-                      schedules: [{ start_ts: manualEvent.date, place: { name: "Local Community" } }],
+                      schedules: [{ start_ts: manualEvent.date, place: { name: "Community" } }],
                       tags: manualEvent.tags || [],
                       imageUrl: manualEvent.imageUrl || null,
                       event_id: manualEvent._id,
